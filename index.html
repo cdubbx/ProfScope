@@ -94,6 +94,17 @@
       border-radius: 4px;
       cursor: pointer;
     }
+    /* Styling for results */
+    .results {
+      margin-top: 1rem;
+    }
+    .result-item {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+      background-color: #f9f9f9;
+    }
   </style>
 </head>
 <body>
@@ -116,12 +127,50 @@
   <section class="section" id="explore">
     <h2>Explore Professors</h2>
     <div class="search-bar">
-      <input type="text" placeholder="Search for a professor or course" />
-      <button>Search</button>
+      <input id="searchInput" type="text" placeholder="Search for a professor or course" />
+      <button id="searchButton">Search</button>
     </div>
+    <div id="results" class="results"></div>
   </section>
 
+  <script>
+    // Sample data for professors
+    const professors = [
+      { name: "Dr. John Smith", course: "Computer Science 101" },
+      { name: "Dr. Jane Doe", course: "Mathematics 201" },
+      { name: "Dr. Emily Johnson", course: "Physics 301" },
+      { name: "Dr. Michael Brown", course: "Chemistry 101" },
+    ];
 
+    // Function to display search results
+    function displayResults(results) {
+      const resultsContainer = document.getElementById("results");
+      resultsContainer.innerHTML = ""; // Clear previous results
+
+      if (results.length === 0) {
+        resultsContainer.innerHTML = "<p>No results found.</p>";
+        return;
+      }
+
+      results.forEach((professor) => {
+        const resultItem = document.createElement("div");
+        resultItem.classList.add("result-item");
+        resultItem.innerHTML = `<strong>${professor.name}</strong> - ${professor.course}`;
+        resultsContainer.appendChild(resultItem);
+      });
+    }
+
+    // Search functionality
+    document.getElementById("searchButton").addEventListener("click", () => {
+      const query = document.getElementById("searchInput").value.toLowerCase();
+      const filteredProfessors = professors.filter(
+        (prof) =>
+          prof.name.toLowerCase().includes(query) ||
+          prof.course.toLowerCase().includes(query)
+      );
+      displayResults(filteredProfessors);
+    });
+  </script>
 
 </body>
 </html>
