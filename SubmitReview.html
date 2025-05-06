@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" href="style.css">
+
+<body>
+    <header>
+        <div class="logo">ProfScope</div>
+        <nav>
+          <a href="#">Explore</a>
+          <a href="SubmitReview.html">Submit Review</a>
+          <a href="Account.html">Account</a>
+          <a href="Login.html">Login</a>
+        </nav>
+      </header>
+    <h2>Submit a Review</h2>
+    <div class="form-section">
+      <label for="professor">Professor</label>
+      <input type="text" id="professor" placeholder="Professor Name" />
+      <label for="course">Course</label>
+      <input type="text" id="course" placeholder="Course Code" />
+      <label for="comments">Comments</label>
+      <textarea id="comments" placeholder="Share your experience"></textarea>
+      <button onclick="submitReview()">Submit Review</button>
+    </div>
+
+    <script>
+        const reviews = [];
+    
+        function submitReview() {
+          const professor = document.getElementById('professor').value;
+          const course = document.getElementById('course').value;
+          const comments = document.getElementById('comments').value;
+    
+          if (!professor || !course) return;
+    
+          const review = {
+            professor,
+            course,
+            comments,
+            ratings: {
+              teaching: 5,
+              grading: 5,
+              workload: 5
+            }
+          };
+          reviews.push(review);
+          renderReviews();
+        }
+    
+        function renderReviews() {
+          const container = document.getElementById('reviews');
+          container.innerHTML = '<h2>My Reviews</h2>' + reviews.map((r, idx) => `
+            <div class="review-card">
+              <div>
+                <strong>${r.professor}</strong><br>
+                <small>${r.course}</small>
+              </div>
+              <div>
+                <p>Teaching: ${renderStars(r.ratings.teaching)}</p>
+                <p>Grading: ${renderStars(r.ratings.grading)}</p>
+                <p>Workload: ${renderStars(r.ratings.workload)}</p>
+              </div>
+              <button onclick="deleteReview(${idx})">Delete</button>
+            </div>
+          `).join('');
+        }
+    
+        function renderStars(count) {
+          return '★'.repeat(count) + '☆'.repeat(5 - count);
+        }
+    
+        function deleteReview(index) {
+          reviews.splice(index, 1);
+          renderReviews();
+        }
+      </script>
+    
+
+</body>
+</html>
